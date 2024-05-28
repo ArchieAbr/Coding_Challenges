@@ -4,6 +4,9 @@ from time import sleep
 from itertools import cycle
 from threading import Thread
 
+
+# TODO: Write a statement that deals with null connections
+
 done = False
 
 
@@ -34,17 +37,17 @@ def setup():
     selection = input("Tests Available:\n For download speed test, press 1.\n For Upload speed test, press 2.\n "
                       "For Ping, press 3.\n To run all tests, press 4\n")
     test = test_arr[int(selection) - 1]
-    closest_server = s.get_closest_servers(1)
+    best_server = s.get_best_server()
 
-    return test, test_arr, closest_server
+    return test, test_arr, best_server
 
 
 # Takes the test selected by the user and runs that test
-def run_selected_test(test, test_arr, closest_server):
+def run_selected_test(test, test_arr, best_server):
     i = 0
     for i in test_arr:
         if test == "download":
-            print("\nTesting Download speed... on server:", closest_server, "\n")
+            print("\nTesting Download speed... on server:", best_server, "\n")
             global done
             done = False
             t = Thread(target=animate)
@@ -54,7 +57,7 @@ def run_selected_test(test, test_arr, closest_server):
             done = True
             break
         elif test == "upload":
-            print("\nTesting Upload speed... on server:", closest_server, "\n")
+            print("\nTesting Upload speed... on server:", best_server, "\n")
             done = False
             t = Thread(target=animate)
             t.start()
@@ -72,7 +75,7 @@ def run_selected_test(test, test_arr, closest_server):
             done = True
             break
         elif test == "run_all":
-            print("\nTesting on sever", closest_server, "\n")
+            print("\nTesting on sever", best_server, "\n")
             done = False
             t = Thread(target=animate)
             t.start()
@@ -93,6 +96,12 @@ def run_selected_test(test, test_arr, closest_server):
 
 
 def main():
+    # Handle the case where the user has no internet connection
+    try:
+        s.get_best_server()
+    except speedtest.NoMatchedServers:
+        print("No servers available. Please check your internet connection.")
+        exit()
     test, test_arr, closest_server = setup()
     run_selected_test(test, test_arr, closest_server)
 
