@@ -14,8 +14,9 @@ def bytes_to_mb(bytes):
 def setup():
     test_arr = ["download", "upload", "ping", "run_all"]
     selection = input("Tests Available:\n For download speed test, press 1.\n For Upload speed test, press 2.\n "
-                      "For Ping, press 2.\n To run all tests, press 4\n")
+                      "For Ping, press 3.\n To run all tests, press 4\n")
     test = test_arr[int(selection) - 1]
+
     return test, test_arr
 
 
@@ -25,21 +26,30 @@ def run_selected_test(test, test_arr):
     for i in test_arr:
         if test == "download":
             download_speed = bytes_to_mb(s.download())
-            print("Your download speed is:", download_speed, "MB/s\n")
+            print("Your Download speed is:", download_speed, "MB/s\n")
             break
         elif test == "upload":
             upload_speed = bytes_to_mb(s.upload())
-            print("Your upload speed is:", upload_speed, "MB/s\n")
+            print("Your Upload speed is:", upload_speed, "MB/s\n")
             break
         elif test == "ping":
             s.get_servers([])
             ping = s.results.ping
             print("Your current ping is:", ping)
             break
-        else:
-            print("NOT IMPLEMENTED")
+        elif test == "run_all":
+            download_speed = bytes_to_mb(s.download())
+            upload_speed = bytes_to_mb(s.upload())
+            s.get_servers([])
+            ping = s.results.ping
+            print("Your Download speed is:", download_speed, "MB/s\n")
+            print("Your Upload speed is:", upload_speed, "MB/s\n")
+            print("Your current ping is:", ping)
+            print("Program will now exit")
             break
-
+        else:
+            print("Invalid selection. Please try again.")
+            break
 
 
 test, test_arr = setup()
