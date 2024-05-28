@@ -73,7 +73,15 @@ def store_result(data):
 <head>
     <title>Speed Test Results</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="results.css">
+        <style>
+        .table thead th {{
+            background-color: #4CAF50; /* Green */
+            color: white;
+        }}
+        .table tbody tr:nth-child(even) {{
+            background-color: #f2f2f2;
+        }}
+    </style>
 </head>
 <body>
     <h1>Speed Test Results</h1>

@@ -1,9 +1,0 @@
-.table thead th {
-    background-color: #4CAF50; /* Green */
-    color: white;
-}
-
-.table tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
