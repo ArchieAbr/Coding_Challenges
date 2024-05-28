@@ -1,9 +1,12 @@
 import speedtest
-from sys import stdout as terminal
 from time import sleep
 from itertools import cycle
 from threading import Thread
 import socket
+from sys import stdout as terminal
+import csv
+import os
+from datetime import datetime
 
 done = False
 
@@ -51,6 +54,19 @@ def bytes_to_mb(bytes):
     return int(bytes / mb)
 
 
+# Write results to a CSV file
+def write_to_csv(data):
+    file_exists = os.path.isfile('speedtest_results.csv')
+    with open('speedtest_results.csv', 'a', newline='') as csvfile:
+        fieldnames = ['date', 'time', 'test_type', 'value']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+        if not file_exists:
+            writer.writeheader()
+
+        writer.writerow(data)
+
+
 # Tests
 def setup(speedtest_instance):
     test_arr = ["download", "upload", "ping", "run_all"]
@@ -71,18 +87,26 @@ def run_selected_test(test, test_arr, best_server, s):
     t = Thread(target=animate)
     t.start()
 
+    # Get the current date and time
+    timestamp = datetime.now()
+    date = timestamp.strftime("%Y-%m-%d")
+    time = timestamp.strftime("%H:%M:%S")
+
     if test == "download":
         download_speed = bytes_to_mb(s.download())
         print("\nYour Download speed is:", download_speed, "Mbits/s\n")
+        write_to_csv({'date': date, 'time': time, 'test_type': 'download', 'value': download_speed})
 
     elif test == "upload":
         upload_speed = bytes_to_mb(s.upload())
         print("Your Upload speed is:", upload_speed, "Mbits/s\n")
+        write_to_csv({'date': date, 'time': time, 'test_type': 'upload', 'value': upload_speed})
 
     elif test == "ping":
         s.get_servers([])
         ping = s.results.ping
         print("Your current ping is:", ping, "ms\n")
+        write_to_csv({'date': date, 'time': time, 'test_type': 'ping', 'value': ping})
 
     elif test == "run_all":
         download_speed = bytes_to_mb(s.download())
@@ -92,6 +116,9 @@ def run_selected_test(test, test_arr, best_server, s):
         print("\nYour Download speed is:", download_speed, "Mbits/s\n")
         print("Your Upload speed is:", upload_speed, "Mbits/s\n")
         print("Your current ping is:", ping, "ms\n")
+        write_to_csv({'date': date, 'time': time, 'test_type': 'download', 'value': download_speed})
+        write_to_csv({'date': date, 'time': time, 'test_type': 'upload', 'value': upload_speed})
+        write_to_csv({'date': date, 'time': time, 'test_type': 'ping', 'value': ping})
 
     done = True
     t.join()
@@ -106,7 +133,9 @@ def run_selected_test(test, test_arr, best_server, s):
     else:
         exit("Program will now exit.")
 
+# Graph results and display them in a GUI
 
+# Main function
 def main():
     connected, speedtest_instance = network_check()
     if connected:
