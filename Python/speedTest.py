@@ -10,16 +10,37 @@ def bytes_to_mb(bytes):
     return int(bytes / mb)
 
 
-# Ping
-s.get_servers([])
-ping = s.results.ping
+# Tests
+def setup():
+    test_arr = ["download", "upload", "ping", "run_all"]
+    selection = input("Tests Available:\n For download speed test, press 1.\n For Upload speed test, press 2.\n "
+                      "For Ping, press 2.\n To run all tests, press 4\n")
+    test = test_arr[int(selection) - 1]
+    return test, test_arr
 
-# Download speed test
-download_speed = bytes_to_mb(s.download())
 
-# Upload speed test
-upload_speed = bytes_to_mb(s.upload())
+# Takes the test selected by the user and runs that test
+def run_selected_test(test, test_arr):
+    i = 0
+    for i in test_arr:
+        if test == "download":
+            download_speed = bytes_to_mb(s.download())
+            print("Your download speed is:", download_speed, "MB/s\n")
+            break
+        elif test == "upload":
+            upload_speed = bytes_to_mb(s.upload())
+            print("Your upload speed is:", upload_speed, "MB/s\n")
+            break
+        elif test == "ping":
+            s.get_servers([])
+            ping = s.results.ping
+            print("Your current ping is:", ping)
+            break
+        else:
+            print("NOT IMPLEMENTED")
+            break
 
-print("Your download speed is:", download_speed, "MB/s\n")
-print("Your upload speed is:", upload_speed, "MB/s\n")
-print("Your current ping is:", ping)
+
+
+test, test_arr = setup()
+run_selected_test(test, test_arr)
