@@ -3,7 +3,7 @@ from sys import stdout as terminal
 from time import sleep
 from itertools import cycle
 from threading import Thread
-
+import socket
 
 # TODO: Write a statement that deals with null connections
 
@@ -21,7 +21,29 @@ def animate():
     terminal.flush()
 
 
-s = speedtest.Speedtest()
+# Check for a connection
+def is_connected():
+    try:
+        # connect to the host -- tells us if the host is actually reachable
+        socket.create_connection(("www.google.com", 80))
+        return True
+    except OSError:
+        pass
+    return False
+
+
+def network_check():
+    if not is_connected():
+        print("No internet connection.")
+        return False, None
+
+    try:
+        s = speedtest.Speedtest()
+        s.get_best_server()
+        return True, s
+    except speedtest.ConfigRetrievalError:
+        print("Failed to retrieve configuration. Please check your network settings.")
+        return False, None
 
 
 # Function to turn the bytes result into megabytes
@@ -32,18 +54,18 @@ def bytes_to_mb(bytes):
 
 
 # Tests
-def setup():
+def setup(speedtest_instance):
     test_arr = ["download", "upload", "ping", "run_all"]
     selection = input("Tests Available:\n For download speed test, press 1.\n For Upload speed test, press 2.\n "
                       "For Ping, press 3.\n To run all tests, press 4\n")
     test = test_arr[int(selection) - 1]
-    best_server = s.get_best_server()
+    best_server = speedtest_instance.get_best_server()
 
     return test, test_arr, best_server
 
 
 # Takes the test selected by the user and runs that test
-def run_selected_test(test, test_arr, best_server):
+def run_selected_test(test, test_arr, best_server, s):
     i = 0
     for i in test_arr:
         if test == "download":
@@ -96,14 +118,12 @@ def run_selected_test(test, test_arr, best_server):
 
 
 def main():
-    # Handle the case where the user has no internet connection
-    try:
-        s.get_best_server()
-    except speedtest.NoMatchedServers:
-        print("No servers available. Please check your internet connection.")
-        exit()
-    test, test_arr, closest_server = setup()
-    run_selected_test(test, test_arr, closest_server)
+    connected, speedtest_instance = network_check()
+    if connected:
+        test, test_arr, best_server = setup(speedtest_instance)
+        run_selected_test(test, test_arr, best_server, speedtest_instance)
+    else:
+        print("Program will now exit.")
 
 
 if __name__ == "__main__":
