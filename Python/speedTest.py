@@ -5,8 +5,6 @@ from itertools import cycle
 from threading import Thread
 import socket
 
-# TODO: Write a statement that deals with null connections
-
 done = False
 
 
@@ -66,53 +64,50 @@ def setup(speedtest_instance):
 
 # Takes the test selected by the user and runs that test
 def run_selected_test(test, test_arr, best_server, s):
+    # Loading animation
+    print(f"\nTesting {test} speed on server: {best_server}\n")
+    global done
+    done = False
+    t = Thread(target=animate)
+    t.start()
+
     if test == "download":
-        print("\nTesting Download speed... on server:", best_server, "\n")
-        global done
-        done = False
-        t = Thread(target=animate)
-        t.start()
         download_speed = bytes_to_mb(s.download())
         print("\nYour Download speed is:", download_speed, "MB/s\n")
-        done = True
 
     elif test == "upload":
-        print("\nTesting Upload speed... on server:", best_server, "\n")
-        done = False
-        t = Thread(target=animate)
-        t.start()
         upload_speed = bytes_to_mb(s.upload())
         print("Your Upload speed is:", upload_speed, "MB/s\n")
-        done = True
 
     elif test == "ping":
-        done = False
-        t = Thread(target=animate)
-        t.start()
         s.get_servers([])
         ping = s.results.ping
         print("Your current ping is:", ping, "ms\n")
-        done = True
 
     elif test == "run_all":
-        print("\nTesting on sever", best_server, "\n")
-        done = False
-        t = Thread(target=animate)
-        t.start()
         download_speed = bytes_to_mb(s.download())
         upload_speed = bytes_to_mb(s.upload())
         s.get_servers([])
         ping = s.results.ping
-
         print("\nYour Download speed is:", download_speed, "MB/s\n")
         print("Your Upload speed is:", upload_speed, "MB/s\n")
         print("Your current ping is:", ping, "ms\n")
-        print("Program will now exit\n")
-        done = True
 
     else:
         print("Invalid selection. Please try again.")
 
+    done = True
+    t.join()
+
+    print("\nPress 1 to return to the main menu or 2 to exit.\nConfirm your choice by pressing Enter.")
+    choice = input()
+    while choice != "1" and choice != "2":
+        print("Invalid selection. Please try again.")
+        choice = input()
+    if choice == "1":
+        main()
+    else:
+        exit("Program will now exit.")
 
 
 def main():
@@ -121,7 +116,7 @@ def main():
         test, test_arr, best_server = setup(speedtest_instance)
         run_selected_test(test, test_arr, best_server, speedtest_instance)
     else:
-        print("Program will now exit.")
+        exit("Program will now exit.")
 
 
 if __name__ == "__main__":
