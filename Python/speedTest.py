@@ -93,9 +93,6 @@ def run_selected_test(test, test_arr, best_server, s):
         print("Your Upload speed is:", upload_speed, "MB/s\n")
         print("Your current ping is:", ping, "ms\n")
 
-    else:
-        print("Invalid selection. Please try again.")
-
     done = True
     t.join()
 
