@@ -73,11 +73,11 @@ def run_selected_test(test, test_arr, best_server, s):
 
     if test == "download":
         download_speed = bytes_to_mb(s.download())
-        print("\nYour Download speed is:", download_speed, "MB/s\n")
+        print("\nYour Download speed is:", download_speed, "Mbits/s\n")
 
     elif test == "upload":
         upload_speed = bytes_to_mb(s.upload())
-        print("Your Upload speed is:", upload_speed, "MB/s\n")
+        print("Your Upload speed is:", upload_speed, "Mbits/s\n")
 
     elif test == "ping":
         s.get_servers([])
@@ -89,8 +89,8 @@ def run_selected_test(test, test_arr, best_server, s):
         upload_speed = bytes_to_mb(s.upload())
         s.get_servers([])
         ping = s.results.ping
-        print("\nYour Download speed is:", download_speed, "MB/s\n")
-        print("Your Upload speed is:", upload_speed, "MB/s\n")
+        print("\nYour Download speed is:", download_speed, "Mbits/s\n")
+        print("Your Upload speed is:", upload_speed, "Mbits/s\n")
         print("Your current ping is:", ping, "ms\n")
 
     done = True
