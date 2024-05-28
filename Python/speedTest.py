@@ -52,5 +52,10 @@ def run_selected_test(test, test_arr):
             break
 
 
-test, test_arr = setup()
-run_selected_test(test, test_arr)
+def main():
+    test, test_arr = setup()
+    run_selected_test(test, test_arr)
+
+
+if __name__ == "__main__":
+    main()
