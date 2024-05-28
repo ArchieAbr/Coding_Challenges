@@ -66,55 +66,53 @@ def setup(speedtest_instance):
 
 # Takes the test selected by the user and runs that test
 def run_selected_test(test, test_arr, best_server, s):
-    i = 0
-    for i in test_arr:
-        if test == "download":
-            print("\nTesting Download speed... on server:", best_server, "\n")
-            global done
-            done = False
-            t = Thread(target=animate)
-            t.start()
-            download_speed = bytes_to_mb(s.download())
-            print("\nYour Download speed is:", download_speed, "MB/s\n")
-            done = True
-            break
-        elif test == "upload":
-            print("\nTesting Upload speed... on server:", best_server, "\n")
-            done = False
-            t = Thread(target=animate)
-            t.start()
-            upload_speed = bytes_to_mb(s.upload())
-            print("Your Upload speed is:", upload_speed, "MB/s\n")
-            done = True
-            break
-        elif test == "ping":
-            done = False
-            t = Thread(target=animate)
-            t.start()
-            s.get_servers([])
-            ping = s.results.ping
-            print("Your current ping is:", ping, "ms\n")
-            done = True
-            break
-        elif test == "run_all":
-            print("\nTesting on sever", best_server, "\n")
-            done = False
-            t = Thread(target=animate)
-            t.start()
-            download_speed = bytes_to_mb(s.download())
-            upload_speed = bytes_to_mb(s.upload())
-            s.get_servers([])
-            ping = s.results.ping
+    if test == "download":
+        print("\nTesting Download speed... on server:", best_server, "\n")
+        global done
+        done = False
+        t = Thread(target=animate)
+        t.start()
+        download_speed = bytes_to_mb(s.download())
+        print("\nYour Download speed is:", download_speed, "MB/s\n")
+        done = True
 
-            print("\nYour Download speed is:", download_speed, "MB/s\n")
-            print("Your Upload speed is:", upload_speed, "MB/s\n")
-            print("Your current ping is:", ping, "ms\n")
-            print("Program will now exit\n")
-            done = True
-            break
-        else:
-            print("Invalid selection. Please try again.")
-            break
+    elif test == "upload":
+        print("\nTesting Upload speed... on server:", best_server, "\n")
+        done = False
+        t = Thread(target=animate)
+        t.start()
+        upload_speed = bytes_to_mb(s.upload())
+        print("Your Upload speed is:", upload_speed, "MB/s\n")
+        done = True
+
+    elif test == "ping":
+        done = False
+        t = Thread(target=animate)
+        t.start()
+        s.get_servers([])
+        ping = s.results.ping
+        print("Your current ping is:", ping, "ms\n")
+        done = True
+
+    elif test == "run_all":
+        print("\nTesting on sever", best_server, "\n")
+        done = False
+        t = Thread(target=animate)
+        t.start()
+        download_speed = bytes_to_mb(s.download())
+        upload_speed = bytes_to_mb(s.upload())
+        s.get_servers([])
+        ping = s.results.ping
+
+        print("\nYour Download speed is:", download_speed, "MB/s\n")
+        print("Your Upload speed is:", upload_speed, "MB/s\n")
+        print("Your current ping is:", ping, "ms\n")
+        print("Program will now exit\n")
+        done = True
+
+    else:
+        print("Invalid selection. Please try again.")
+
 
 
 def main():
