@@ -72,15 +72,31 @@ def store_result(data):
 <html>
 <head>
     <title>Speed Test Results</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="results.css">
 </head>
 <body>
     <h1>Speed Test Results</h1>
-    <p>Date: {data['date']}</p>
-    <p>Time: {data['time']}</p>
-    <p>Download Speed: {data.get('download', 'N/A')} Mbits/s</p>
-    <p>Upload Speed: {data.get('upload', 'N/A')} Mbits/s</p>
-    <p>Ping: {data.get('ping', 'N/A')} ms</p>
-    <hr>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Time</th>
+                <th scope="col">Download Speed</th>
+                <th scope="col">Upload Speed</th>
+                <th scope="col">Ping</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{data['date']}</td>
+                <td>{data['time']}</td>
+                <td>{data.get('download', 'N/A')} Mbits/s</td>
+                <td>{data.get('upload', 'N/A')} Mbits/s</td>
+                <td>{data.get('ping', 'N/A')} ms</td>
+            </tr>
+        </tbody>
+    </table>
 </body>
 </html>
 """
