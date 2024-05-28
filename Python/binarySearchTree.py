@@ -15,7 +15,7 @@ def binary_search(array, lo, hi, user_number):
         elif array[mid] > user_number:
             return binary_search(array, lo, mid - 1, user_number)
 
-        #         else it must be right of the mid point
+        #         else it must be right of the mid-point
         else:
             return binary_search(array, mid + 1, hi, user_number)
 
@@ -28,9 +28,7 @@ def binary_search(array, lo, hi, user_number):
 array = [1, 2, 3, 4, 5, 6, 7, 68, 92, 128, 256, 344]
 x = selection()
 result = binary_search(array, 0, len(array)-1, x)
-
 if result != -1:
     print("Your number (", x, ") is present at index", str(result), "\n")
 else:
     print("Value not present.\n")
-
