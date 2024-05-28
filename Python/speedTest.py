@@ -35,7 +35,7 @@ def run_selected_test(test, test_arr):
         elif test == "ping":
             s.get_servers([])
             ping = s.results.ping
-            print("Your current ping is:", ping)
+            print("Your current ping is:", ping, "ms\n")
             break
         elif test == "run_all":
             download_speed = bytes_to_mb(s.download())
@@ -44,7 +44,7 @@ def run_selected_test(test, test_arr):
             ping = s.results.ping
             print("Your Download speed is:", download_speed, "MB/s\n")
             print("Your Upload speed is:", upload_speed, "MB/s\n")
-            print("Your current ping is:", ping)
+            print("Your current ping is:", ping, "ms\n")
             print("Program will now exit")
             break
         else:
