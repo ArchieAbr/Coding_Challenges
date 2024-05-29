@@ -4,6 +4,7 @@ from itertools import cycle
 from threading import Thread
 import socket
 from sys import stdout as terminal
+from sys import exit
 import csv
 import os
 from datetime import datetime

@@ -1,3 +1,0 @@
-([('speedTest',
-   '/Users/archie/Developer/Programming/Coding_Challenges/Python/speed_test_project/dist/speedTest',
-   'EXECUTABLE')],)
