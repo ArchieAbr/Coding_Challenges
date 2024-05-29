@@ -4,12 +4,14 @@ import threading
 import speedtest
 import socket
 
+
 def is_connected():
     try:
         socket.create_connection(("www.google.com", 80))
         return True
     except OSError:
         return False
+
 
 def network_check():
     if not is_connected():
@@ -25,18 +27,23 @@ def network_check():
         print("Failed to retrieve configuration.")
         return False, None
 
+
 def bytes_to_mb(bytes):
     kb = 1024
     mb = kb * 1024
     return int(bytes / mb)
 
+
 def update_results(test_type, result):
-    labels[test_type].config(text=f"{test_type} Speed: {result} Mbps" if test_type != 'Latency' else f"Latency: {result} ms")
+    labels[test_type].config(
+        text=f"{test_type} Speed: {result} Mbps" if test_type != 'Latency' else f"Latency: {result} ms")
     status_label.config(text=f"Completed {test_type} Test")
     progress.step(33.3)
 
+
 def animate_dots(test_type):
     labels[test_type].config(text=f"{test_type} Speed: ..." if test_type != 'Latency' else "Latency: ...")
+
 
 def threaded_test(speed_tester):
     root.after(0, progress.configure, {'value': 5})  # Pre-fill the bar slightly
@@ -52,12 +59,14 @@ def threaded_test(speed_tester):
         upload_speed = bytes_to_mb(speed_tester.upload())
         root.after(0, update_results, 'Upload', upload_speed)
 
+
 def run_speed_test():
     status_label.config(text="Running Tests...")
     progress['value'] = 0  # Reset progress bar
     network_ok, speed_tester = network_check()
     if network_ok:
         threading.Thread(target=threaded_test, args=(speed_tester,)).start()
+
 
 root = tk.Tk()
 root.title("Speed Test 2.0")
@@ -97,4 +106,3 @@ labels['Upload'].grid(row=7, column=0, pady=(10, 0))
 labels['Latency'].grid(row=5, column=0, pady=(10, 0))
 
 root.mainloop()
-
