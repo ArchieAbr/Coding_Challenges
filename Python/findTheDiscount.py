@@ -1,7 +1,3 @@
-# TODO: Create a function that takes in two arguments, a price and a
-#  discount percentage and returns the final price
-#  to 2 dp
-
 def find_discount():
     price = float(input("Please entre the original price of the item:\n"))
     discount = float(input("Please enter the discount percentage:\n"))
