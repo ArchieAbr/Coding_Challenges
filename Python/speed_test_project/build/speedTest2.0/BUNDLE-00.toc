@@ -1,0 +1,3 @@
+([('speedTest2.0',
+   '/Users/archie/Developer/Programming/Coding_Challenges/Python/speed_test_project/dist/speedTest2.0',
+   'EXECUTABLE')],)
