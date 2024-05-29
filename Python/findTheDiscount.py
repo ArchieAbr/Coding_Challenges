@@ -1,13 +1,19 @@
 from sys import exit
 
 
+# Find discount
 def find_discount():
-    price = float(input("Please entre the original price of the item:\n"))
-    discount = float(input("Please enter the discount percentage:\n"))
-    # Calculate discount
-    div_val = float(discount / 100)
-    discounted_price = float(price - (price * div_val))
-    return discounted_price
+    # Handle incorrect user inputs by using try
+    while True:
+        try:
+            price = float(input("Please entre the original price of the item: "))
+            discount = float(input("Please enter the discount percentage: "))
+            # Calculate discount
+            div_val = float(discount / 100)
+            discounted_price = float(price - (price * div_val))
+            return discounted_price
+        except ValueError:
+            print("Invalid input, please input a number.")
 
 
 # Main
