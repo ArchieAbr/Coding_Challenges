@@ -12,8 +12,10 @@ import pygame
 import os
 import sys
 
+total_sessions = 0
+completed_sessions = 0
+
 # Initialize pygame mixer for playing sound
-# Determine if running in a bundle or a normal Python environment
 base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
 
 # Construct the path to the MP3 file
@@ -26,7 +28,7 @@ alarm_sound = pygame.mixer.Sound(alarm_file_path)
 def countdown(count):
     global timer_id  # To keep track of the after() call for cancellation
     if count > 0:
-        label.config(text=f"{current_session} Time remaining: " + time.strftime("%H:%M:%S", time.gmtime(count)))
+        label.config(text=f"{current_session} time remaining: " + time.strftime("%H:%M:%S", time.gmtime(count)))
         timer_id = root.after(1000, countdown, count - 1)
     else:
         play_sound()
@@ -34,21 +36,22 @@ def countdown(count):
 
 
 def switch_state():
-    global is_study_time, num_sessions, current_session
+    global is_study_time, num_sessions, current_session, completed_sessions
     if is_study_time:
         if num_sessions > 0:
             num_sessions -= 1
+            completed_sessions += 1
             current_session = "Break"
-            label.config(text="Time for a break!")
+            session_label.config(text=f"Session {completed_sessions} of {total_sessions}")
             countdown(int(break_length.get()) * 60)  # Break period
         else:
             messagebox.showinfo("Session Info", "All sessions complete!")
             label.config(text="All done!")
+            session_label.config(text="All sessions completed.")
     else:
         current_session = "Study"
-        label.config(text="Back to work!")
         countdown(int(study_length.get()) * 60)  # Study period
-    is_study_time = not is_study_time  # Toggle the state
+    is_study_time = not is_study_time
 
 
 def play_sound():
@@ -56,12 +59,15 @@ def play_sound():
 
 
 def start_timer():
-    global is_study_time, num_sessions, timer_id, current_session
+    global is_study_time, num_sessions, timer_id, current_session, total_sessions, completed_sessions
     num_sessions = simpledialog.askinteger("Input", "How many study sessions?", minvalue=1)
     if num_sessions:
+        total_sessions = num_sessions
+        completed_sessions = 0  # Reset the completed sessions count
         is_study_time = True
         current_session = "Study"
-        timer_id = None  # Reset the timer ID
+        timer_id = None
+        session_label.config(text=f"Session {completed_sessions + 1} of {total_sessions}")
         countdown(int(study_length.get()) * 60)
 
 
@@ -94,5 +100,8 @@ cancel_button.pack()
 
 label = tk.Label(root, text="Please enter the durations and start the timer.")
 label.pack()
+
+session_label = tk.Label(root, text="Timer not set")
+session_label.pack()
 
 root.mainloop()
