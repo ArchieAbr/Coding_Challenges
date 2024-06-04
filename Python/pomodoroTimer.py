@@ -9,10 +9,18 @@ import tkinter as tk
 from tkinter import simpledialog, messagebox
 import time
 import pygame
+import os
+import sys
 
 # Initialize pygame mixer for playing sound
+# Determine if running in a bundle or a normal Python environment
+base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+
+# Construct the path to the MP3 file
+alarm_file_path = os.path.join(base_path, 'clock-alarm-8761.mp3')
+
 pygame.mixer.init()
-alarm_sound = pygame.mixer.Sound('clock-alarm-8761.mp3')  # Ensure you have an 'alarm.wav' file in the same directory
+alarm_sound = pygame.mixer.Sound(alarm_file_path)
 
 
 def countdown(count):
