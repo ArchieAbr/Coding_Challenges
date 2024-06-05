@@ -1,0 +1,3 @@
+([('findTheDiscount',
+   '/Users/archie/Developer/Programming/Coding_Challenges/Python/dist/findTheDiscount',
+   'EXECUTABLE')],)
