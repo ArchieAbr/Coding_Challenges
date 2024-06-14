@@ -26,7 +26,7 @@ def animate():
 # Check for a connection
 def is_connected():
     try:
-        # connect to the host -- tells us if the host is actually reachable
+        # Tests for internet connection by pinging google.com
         socket.create_connection(("www.google.com", 80))
         return True
     except OSError:
@@ -120,9 +120,9 @@ def store_result(data):
 
 # Tests
 def setup(speedtest_instance):
-    test_arr = ["download", "upload", "ping", "run_all"]
-    selection = input("Tests Available:\n For download speed test, press 1.\n For Upload speed test, press 2.\n "
-                      "For Ping, press 3.\n To run all tests, press 4\n")
+    test_arr = ["run_all", "download", "upload", "ping"]
+    selection = input("Tests Available:\n to run all tests, press 1.\n For Upload speed test, press 2.\n " # Archie: Edited test orders (for Matt)
+                      "For Ping, press 3.\n To test ping, press 4\n")
     test = test_arr[int(selection) - 1]
     best_server = speedtest_instance.get_best_server()
 
