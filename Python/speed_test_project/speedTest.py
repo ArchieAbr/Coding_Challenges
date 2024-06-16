@@ -11,6 +11,9 @@ from datetime import datetime
 
 done = False
 
+# TODO: Create a routine that deals with exceptionally low network speeds
+# At the moment the app is running the network_check() routine which will fail for super slow networks
+
 
 def animate():
     for c in cycle(['|', '/', '-', '\\']):
