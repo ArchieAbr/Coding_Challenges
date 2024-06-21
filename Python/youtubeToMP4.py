@@ -2,6 +2,7 @@ import ssl
 from sys import exit
 import socket
 from pytube import YouTube
+from tqdm import tqdm
 
 # Set up
 ssl._create_default_https_context = ssl._create_unverified_context
@@ -16,9 +17,15 @@ def check_connection():
         return False
 
 
+def progress_function(stream, chunk, bytes_remaining):
+    current = stream.filsize - bytes_remaining
+    percent = (current / stream.filesize) * 100
+    print(f"Progress {percent}%", end='\r')
+
+
 # Function to handle downloading
 def download(link):
-    youtube_object = YouTube(link)
+    youtube_object = YouTube(link,on_complete_callback=progress_function)
     youtube_object = youtube_object.streams.get_highest_resolution()
     try:
         title = youtube_object.title
