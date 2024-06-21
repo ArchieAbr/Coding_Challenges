@@ -1,5 +1,5 @@
 import ssl
-import sys
+from sys import exit
 import socket
 from pytube import YouTube
 
@@ -8,7 +8,7 @@ ssl._create_default_https_context = ssl._create_unverified_context
 SAVE_PATH = "/Users/archie/Desktop/Youtube_Videos"
 
 
-def test_connection():
+def check_connection():
     try:
         socket.create_connection(("www.google.com", 80))
         return True
@@ -30,14 +30,13 @@ def download(link):
         print("Download completed successfully, video is can be found here:", SAVE_PATH, "\n")
     except:
         print("An error has occurred while trying to download your video, please check your network connection\n")
-        sys.exit(1)
-
+        exit(1)
 
 
 def main():
-    if not test_connection():
-        print("No internet connection.")
-        return
+    if not check_connection():
+        print("No internet connection. Please try again")
+        exit(1)
     print("Checking connection...")
     print("Connection established.\n")
     link = input("Please copy the Youtube Video URL into the terminal\n")
