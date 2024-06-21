@@ -16,24 +16,28 @@ def check_connection():
     except OSError:
         return False
 
-
+# Progress bar
 def progress_function(stream, chunk, bytes_remaining):
-    current = stream.filsize - bytes_remaining
-    percent = (current / stream.filesize) * 100
-    print(f"Progress {percent}%", end='\r')
+    current = stream.filesize - bytes_remaining
+    progress_bar.update(current - progress_function.prev)
+    progress_function.prev = current
 
 
 # Function to handle downloading
 def download(link):
-    youtube_object = YouTube(link,on_complete_callback=progress_function)
+    youtube_object = YouTube(link, on_progress_callback=progress_function)
     youtube_object = youtube_object.streams.get_highest_resolution()
     try:
         title = youtube_object.title
         file_size = youtube_object.filesize_mb
         print("Found video:", title)
         print("Approx. file size:", file_size, "MB")
-        print("Downloading Video...\n")
+        print("Downloading Video...")
+        global progress_bar
+        progress_bar = tqdm(total=youtube_object.filesize, unit='B', unit_scale=True)
+        progress_function.prev = 0
         youtube_object.download(output_path=SAVE_PATH)
+        progress_bar.close()
         print("Download completed successfully, video is can be found here:", SAVE_PATH, "\n")
     except:
         print("An error has occurred while trying to download your video, please check your network connection\n")
