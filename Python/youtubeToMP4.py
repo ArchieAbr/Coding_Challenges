@@ -16,6 +16,7 @@ def check_connection():
     except OSError:
         return False
 
+
 # Progress bar
 def progress_function(stream, chunk, bytes_remaining):
     current = stream.filesize - bytes_remaining
@@ -39,6 +40,7 @@ def download(link):
         youtube_object.download(output_path=SAVE_PATH)
         progress_bar.close()
         print("Download completed successfully, video is can be found here:", SAVE_PATH, "\n")
+        exit(0)
     except:
         print("An error has occurred while trying to download your video, please check your network connection\n")
         exit(1)
