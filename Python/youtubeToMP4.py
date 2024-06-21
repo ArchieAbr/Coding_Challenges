@@ -40,7 +40,6 @@ def download(link):
         youtube_object.download(output_path=SAVE_PATH)
         progress_bar.close()
         print("Download completed successfully, video is can be found here:", SAVE_PATH, "\n")
-        exit(0)
     except:
         print("An error has occurred while trying to download your video, please check your network connection\n")
         exit(1)
